@@ -17,6 +17,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { BASE_URL } from "@/config";
 import LOCALSTORAGE_KEYS from "@/config/storage";
+import { LoadingSpinner } from "@/components/Loader";
 
 const Login: React.FC = () => {
   const { toast } = useToast();
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -34,6 +36,7 @@ const Login: React.FC = () => {
         });
         return;
       }
+      setLoading(true);
       const response = await axios.post(`${BASE_URL}/auth/login`, {
         username,
         password,
@@ -52,6 +55,8 @@ const Login: React.FC = () => {
             : "Something went wrong",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -89,7 +94,9 @@ const Login: React.FC = () => {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Forgot password</Button>
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button onClick={handleSubmit} className="w-20">
+          {loading ? <LoadingSpinner /> : "Submit"}
+        </Button>
       </CardFooter>
     </Card>
   );
