@@ -1,8 +1,10 @@
 import NavBar from "@/components/NavBar";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import {
   fetchAllProducts,
   selectAllProducts,
+  selectProductsLoading,
 } from "@/redux/features/storeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import React from "react";
@@ -10,6 +12,7 @@ import React from "react";
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const allProducts = useAppSelector(selectAllProducts);
+  const allProductsLoading = useAppSelector(selectProductsLoading);
 
   React.useEffect(() => {
     dispatch(fetchAllProducts());
@@ -21,11 +24,19 @@ const Dashboard: React.FC = () => {
       style={{ background: "hsl(var(--background))" }}
     >
       <NavBar />
-      <div className="flex flex-wrap gap-4 justify-center pt-2.5 w-[1200px]">
-        {allProducts.map((product) => (
-          <ProductCard product={product} key={product.id} />
-        ))}
-      </div>
+      {allProductsLoading ? (
+        <div className="flex flex-wrap gap-4 justify-center pt-2.5 w-[1200px]">
+          {[...Array(9)].map((_el, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-4 justify-center pt-2.5 w-[1200px]">
+          {allProducts.map((product) => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
