@@ -5,17 +5,20 @@ import axios from "axios";
 import { RootState } from "../store";
 import { BASE_URL } from "@/config";
 import Product from "@/types/product";
+import LOCALSTORAGE_KEYS from "@/config/storage";
 
 export interface StoreState {
   products: Product[];
   productsLoading: boolean;
   cart: Product[];
+  accessToken?: string | null;
 }
 
 const initialState: StoreState = {
   products: [],
   productsLoading: false,
   cart: [],
+  accessToken: localStorage.getItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN),
 };
 
 export const storeSlice = createSlice({
@@ -24,6 +27,14 @@ export const storeSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<Product>) => {
       state.cart = [...state.cart, action.payload];
+    },
+    setAccessToken: (state, action: PayloadAction<string | undefined>) => {
+      state.accessToken = action.payload;
+      if (action.payload) {
+        localStorage.setItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN, action.payload);
+      } else {
+        localStorage.removeItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -58,11 +69,12 @@ export const fetchAllProducts = createAsyncThunk(
 //   }
 // );
 
-export const { addToCart } = storeSlice.actions;
+export const { addToCart, setAccessToken } = storeSlice.actions;
 
 export const selectAllProducts = (state: RootState) => state.store.products;
 export const selectProductsLoading = (state: RootState) =>
   state.store.productsLoading;
 export const selectCart = (state: RootState) => state.store.cart;
+export const selectAccessToken = (state: RootState) => state.store.accessToken;
 
 export default storeSlice.reducer;

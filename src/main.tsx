@@ -9,11 +9,16 @@ import "./index.css";
 import Login from "./pages/Login.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import { store } from "./redux/store.ts";
+import ProtectedRoute from "./lib/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />,
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/product/:productId",

@@ -16,12 +16,14 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 import { BASE_URL } from "@/config";
-import LOCALSTORAGE_KEYS from "@/config/storage";
 import { LoadingSpinner } from "@/components/Loader";
+import { useAppDispatch } from "@/redux/hooks";
+import { setAccessToken } from "@/redux/features/storeSlice";
 
 const Login: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -41,7 +43,7 @@ const Login: React.FC = () => {
         username,
         password,
       });
-      localStorage.setItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN, response.data.token);
+      dispatch(setAccessToken(response.data.token));
       toast({
         description: "Login successful",
       });

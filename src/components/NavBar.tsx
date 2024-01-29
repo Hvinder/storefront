@@ -7,14 +7,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
-import LOCALSTORAGE_KEYS from "@/config/storage";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/redux/hooks";
+import { setAccessToken } from "@/redux/features/storeSlice";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN);
+    dispatch(setAccessToken(undefined));
     navigate("/login");
   };
   return (
