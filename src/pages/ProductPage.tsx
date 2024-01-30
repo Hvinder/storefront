@@ -18,6 +18,7 @@ const ProductPage: React.FC = () => {
   );
   const [loading, setLoading] = React.useState(false);
 
+  // TODO: this could be a hook
   const handleAddToCart = async () => {
     try {
       setLoading(true);

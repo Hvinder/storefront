@@ -12,6 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { CART_ID } from "@/config";
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ const Cart: React.FC = () => {
   const allProductsLoading = useAppSelector(selectProductsLoading);
 
   React.useEffect(() => {
-    dispatch(fetchCart());
+    dispatch(fetchCart(CART_ID));
   }, [dispatch]);
 
   return (
@@ -43,6 +44,15 @@ const Cart: React.FC = () => {
           </div>
         )}
       </div>
+      {allProducts.length ? (
+        <div className="flex flex-col items-center gap-4 pt-10">
+          <Button onClick={() => dispatch(fetchCart("800"))}>
+            Empty cart?
+          </Button>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

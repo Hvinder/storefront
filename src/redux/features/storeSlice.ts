@@ -71,20 +71,23 @@ export const fetchAllProducts = createAsyncThunk(
     return response.data;
   }
 );
-export const fetchCart = createAsyncThunk("products/fetchCart", async () => {
-  const response = await axios.get<{ products: Cart[] }>(
-    `${BASE_URL}/carts/${CART_ID}`
-  );
-  const cart = response.data?.products || [];
-  const cartData = await Promise.all(
-    cart.map(async (c) => {
-      const id = c.productId;
-      const res = await axios.get<Product>(`${BASE_URL}/products/${id}`);
-      return { ...res.data, quantity: c.quantity };
-    })
-  );
-  return { cart, cartData };
-});
+export const fetchCart = createAsyncThunk(
+  "products/fetchCart",
+  async (cartId: string = CART_ID) => {
+    const response = await axios.get<{ products: Cart[] }>(
+      `${BASE_URL}/carts/${cartId}`
+    );
+    const cart = response.data?.products || [];
+    const cartData = await Promise.all(
+      cart.map(async (c) => {
+        const id = c.productId;
+        const res = await axios.get<Product>(`${BASE_URL}/products/${id}`);
+        return { ...res.data, quantity: c.quantity };
+      })
+    );
+    return { cart, cartData };
+  }
+);
 
 export const { setAccessToken } = storeSlice.actions;
 
