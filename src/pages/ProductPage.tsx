@@ -10,16 +10,27 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { BASE_URL, USER_ID } from "@/config";
 import { LoadingSpinner } from "@/components/Loader";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 const ProductPage: React.FC = () => {
   const { productId = "1" } = useParams();
+  const { toast } = useToast();
   const { productDetails: product, productDetailsLoading } = useProductDetails(
     +productId
   );
   const [loading, setLoading] = React.useState(false);
+  const [quantity, setQuantity] = React.useState(1);
 
   // TODO: this could be a hook
   const handleAddToCart = async () => {
+    if (quantity < 1 || quantity > 10) {
+      toast({
+        description: "Quantity should be between 1 and 10",
+        variant: "destructive",
+      });
+      return;
+    }
     try {
       setLoading(true);
       await axios.post(`${BASE_URL}/carts`, {
@@ -27,7 +38,7 @@ const ProductPage: React.FC = () => {
         products: [
           {
             productId: product?.id,
-            quantity: 1,
+            quantity,
           },
         ],
       });
@@ -63,13 +74,21 @@ const ProductPage: React.FC = () => {
               <Badge className="w-fit cursor-pointer">{product.category}</Badge>
               <StarRating rating={product.rating} />
               <Label>{product.description}</Label>
-              <Button onClick={handleAddToCart}>
-                {loading ? (
-                  <LoadingSpinner />
-                ) : (
-                  `Add to cart - $${product.price}`
-                )}
-              </Button>
+              <div className="flex gap-2">
+                <Input
+                  type="number"
+                  value={quantity}
+                  onChange={(ev) => setQuantity(+ev.target.value)}
+                  className="w-1/4"
+                />
+                <Button onClick={handleAddToCart} className="w-3/4">
+                  {loading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    `Add to cart - $${product.price}`
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         )}
