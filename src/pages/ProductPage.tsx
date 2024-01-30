@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import NavBar from "@/components/NavBar";
 import useProductDetails from "@/hooks/useProductDetails";
@@ -12,10 +12,12 @@ import { BASE_URL, USER_ID } from "@/config";
 import { LoadingSpinner } from "@/components/Loader";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const ProductPage: React.FC = () => {
   const { productId = "1" } = useParams();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { productDetails: product, productDetailsLoading } = useProductDetails(
     +productId
   );
@@ -41,6 +43,14 @@ const ProductPage: React.FC = () => {
             quantity,
           },
         ],
+      });
+      toast({
+        description: "Added to cart",
+        action: (
+          <ToastAction altText="Try again" onClick={() => navigate("/cart")}>
+            Go to cart
+          </ToastAction>
+        ),
       });
     } catch (err) {
       console.error(err);

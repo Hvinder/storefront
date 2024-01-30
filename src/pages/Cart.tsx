@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import NavBar from "@/components/NavBar";
-import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import {
   fetchCart,
   selectCart,
@@ -13,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { CART_ID } from "@/config";
 import CartItem from "@/components/CartItem";
+import CartItemSkeleton from "@/components/CartItemSkeleton";
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ const Cart: React.FC = () => {
       <NavBar />
       <div className="flex flex-wrap flex-col gap-4 justify-center items-center py-2.5 w-[1200px]">
         {allProductsLoading ? (
-          [...Array(12)].map((_el, i) => <ProductCardSkeleton key={i} />)
+          [...Array(3)].map((_el, i) => <CartItemSkeleton key={i} />)
         ) : allProducts.length ? (
           allProducts.map((product) => (
             <CartItem product={product} key={product.id} />
