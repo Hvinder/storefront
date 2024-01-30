@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
-import Product from "@/types/product";
+import Product, { CartData } from "@/types/product";
 import StarRating from "./StarRating";
 
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+const ProductCard: React.FC<
+  { product: Product; isCart?: false } | { product: CartData; isCart?: true }
+> = ({ product, isCart = false }) => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +25,9 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     >
       <CardHeader>
         <CardTitle className="truncate whitespace-nowrap">
-          {product.title}
+          {isCart
+            ? `${product.title} - ${(product as CartData).quantity}`
+            : product.title}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex justify-center">

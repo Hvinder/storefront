@@ -13,4 +13,11 @@ export type Rating = {
   count: number;
 };
 
+export type Cart = {
+  productId: number;
+  quantity: number;
+};
+
+export type CartData = Product & { quantity: number };
+
 export default Product;

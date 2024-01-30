@@ -4,6 +4,7 @@ import ProtectedRoute from "@/lib/ProtectedRoute";
 import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import ProductPage from "@/pages/ProductPage";
+import Cart from "@/pages/Cart";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +17,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/product/:productId",
-    element: <ProductPage />,
+    element: (
+      <ProtectedRoute>
+        <ProductPage />,
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/cart",
+    element: (
+      <ProtectedRoute>
+        <Cart />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

@@ -29,15 +29,20 @@ const NavBar: React.FC = () => {
         STOREFRONT
       </Label>
       <div className="flex items-center gap-10">
-        <Label className="text-white cursor-pointer text-lg">Cart</Label>
+        <Label
+          className="text-white cursor-pointer text-lg"
+          onClick={() => navigate("/cart")}
+        >
+          Cart
+        </Label>
         <Popover>
           <PopoverTrigger asChild>
-            <Avatar className="cursor-pointer">
+            <Avatar className="cursor-pointer border-2 border-solid border-white">
               <AvatarImage
                 src="https://avatars.githubusercontent.com/u/72211410?v=4"
                 alt="@shadcn"
               />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>HV</AvatarFallback>
             </Avatar>
           </PopoverTrigger>
           <PopoverContent
