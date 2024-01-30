@@ -24,19 +24,13 @@ const Dashboard: React.FC = () => {
       style={{ background: "hsl(var(--background))" }}
     >
       <NavBar />
-      {allProductsLoading ? (
-        <div className="flex flex-wrap gap-4 justify-center pt-2.5 w-[1200px]">
-          {[...Array(9)].map((_el, i) => (
-            <ProductCardSkeleton key={i} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-wrap gap-4 justify-center pt-2.5 w-[1200px]">
-          {allProducts.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </div>
-      )}
+      <div className="flex flex-wrap gap-4 justify-center pt-2.5 w-[1200px]">
+        {allProductsLoading
+          ? [...Array(12)].map((_el, i) => <ProductCardSkeleton key={i} />)
+          : allProducts.map((product) => (
+              <ProductCard product={product} key={product.id} />
+            ))}
+      </div>
     </div>
   );
 };
