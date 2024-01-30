@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/redux/hooks";
 import { setAccessToken } from "@/redux/features/storeSlice";
 import { ExitIcon } from "@radix-ui/react-icons";
+import CartIcon from "./CartIcon";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
@@ -29,12 +30,9 @@ const NavBar: React.FC = () => {
         STOREFRONT
       </Label>
       <div className="flex items-center gap-10">
-        <Label
-          className="text-white cursor-pointer text-lg"
-          onClick={() => navigate("/cart")}
-        >
-          Cart
-        </Label>
+        <div className="cursor-pointer" onClick={() => navigate("/cart")}>
+          <CartIcon />
+        </div>
         <Popover>
           <PopoverTrigger asChild>
             <Avatar className="cursor-pointer border-2 border-solid border-white">
