@@ -8,7 +8,7 @@ type Product = {
   rating: Rating;
 };
 
-type Rating = {
+export type Rating = {
   rate: number;
   count: number;
 };

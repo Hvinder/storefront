@@ -1,34 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import { Toaster } from "@/components/ui/toaster";
 
 import "./index.css";
-import Login from "./pages/Login.tsx";
-import Dashboard from "./pages/Dashboard.tsx";
 import { store } from "./redux/store.ts";
-import ProtectedRoute from "./lib/ProtectedRoute.tsx";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <ProtectedRoute>
-        <Dashboard />,
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/product/:productId",
-    element: <Dashboard />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-]);
+import router from "./routes/router.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 
 import Product from "@/types/product";
-import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
+import StarRating from "./StarRating";
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const navigate = useNavigate();
@@ -38,18 +38,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Label>${product.price}</Label>
-        <div className="flex gap-0">
-          {[...Array(Math.floor(product.rating.rate))].map((_el, i) => (
-            <StarFilledIcon key={i} />
-          ))}
-          {[...Array(5 - Math.floor(product.rating.rate))].map((_el, i) => (
-            <StarIcon
-              fill={product.rating.rate / 5 > i ? "#000" : "red"}
-              key={i}
-            />
-          ))}
-          <Label>({product.rating.count})</Label>
-        </div>
+        <StarRating rating={product.rating} />
       </CardFooter>
     </Card>
   );

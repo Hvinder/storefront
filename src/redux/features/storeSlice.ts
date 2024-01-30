@@ -17,7 +17,7 @@ export interface StoreState {
 const initialState: StoreState = {
   products: [],
   productsLoading: false,
-  cart: [],
+  cart: JSON.parse(localStorage.getItem(LOCALSTORAGE_KEYS.CART) || "[]"),
   accessToken: localStorage.getItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN),
 };
 
@@ -26,7 +26,9 @@ export const storeSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<Product>) => {
-      state.cart = [...state.cart, action.payload];
+      const updatedCart = [...state.cart, action.payload];
+      state.cart = updatedCart;
+      localStorage.setItem(LOCALSTORAGE_KEYS.CART, JSON.stringify(updatedCart));
     },
     setAccessToken: (state, action: PayloadAction<string | undefined>) => {
       state.accessToken = action.payload;
@@ -56,22 +58,16 @@ export const storeSlice = createSlice({
 export const fetchAllProducts = createAsyncThunk(
   "products/fetchAll",
   async () => {
-    const response = await axios.get(`${BASE_URL}/products`);
+    const response = await axios.get<Product[]>(`${BASE_URL}/products`);
     return response.data;
   }
 );
 
-// const fetchProductById = createAsyncThunk(
-//   "products/fetchById",
-//   async (productId: string) => {
-//     const response = await axios.get(`${BASE_URL}/products/${productId}`);
-//     return response.data;
-//   }
-// );
-
 export const { addToCart, setAccessToken } = storeSlice.actions;
 
 export const selectAllProducts = (state: RootState) => state.store.products;
+export const selectProductById = (productId: number) => (state: RootState) =>
+  state.store.products.find((p) => p.id === productId);
 export const selectProductsLoading = (state: RootState) =>
   state.store.productsLoading;
 export const selectCart = (state: RootState) => state.store.cart;
